@@ -1,0 +1,42 @@
+{
+    "name": "Regulatory Copilot Demo",
+    "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+    "hostRequirements": {
+        "cpus": 2,
+        "memory": "4gb",
+        "storage": "16gb"
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "lts"
+        }
+    },
+    "forwardPorts": [8080],
+    "portsAttributes": {
+        "8080": {
+            "label": "Regulatory Copilot Demo",
+            "onAutoForward": "openPreview",
+            "requireLocalPort": false,
+            "visibility": "public"
+        }
+    },
+    "postAttachCommand": {
+        "server": "cd ${containerWorkspaceFolder}/demo && python3 -m http.server 8080"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "esbenp.prettier-vscode",
+                "dbaeumer.vscode-eslint",
+                "ritwickdey.LiveServer",
+                "ms-azuretools.vscode-docker"
+            ],
+            "settings": {
+                "editor.formatOnSave": false,
+                "files.eol": "\n",
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
+    },
+    "remoteUser": "codespace"
+}

@@ -1,0 +1,25 @@
+# Copilot tracking (session state)
+.copilot-tracking/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# Node
+node_modules/
+
+# Build outputs
+dist/
+build/
+*.log

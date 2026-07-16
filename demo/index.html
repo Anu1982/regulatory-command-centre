@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f5f7" />
+    <title>Regulatory Intelligence · Boehringer Ingelheim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+    <div class="sidebar-scrim" id="sidebarScrim"></div>
+
+    <div class="shell">
+        <!-- macOS-style sidebar (agent catalog) -->
+        <aside class="sidebar" id="sidebar" aria-label="Agent catalog">
+            <div class="sidebar__brand">
+                <span class="sidebar__logo" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                        stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4z" />
+                        <path d="m9 12 2 2 4-4" />
+                    </svg>
+                </span>
+                <div class="sidebar__brand-text">
+                    <b>Regulatory Copilot</b>
+                    <small>Boehringer Ingelheim</small>
+                </div>
+            </div>
+            <nav id="sidebarNav" aria-label="Modules"></nav>
+            <div class="sidebar__footer">
+                <div>v0.4 · demo build</div>
+                <div>Illustrative content — not for regulatory use</div>
+            </div>
+        </aside>
+
+        <div class="main-pane">
+            <!-- Frosted-glass top nav -->
+            <nav class="nav nav--slim" aria-label="Primary">
+                <div class="nav__inner">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <button class="hamburger" id="hamburger" aria-label="Open sidebar" type="button">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+                        </button>
+                        <div class="nav__title">
+                            <b id="navTitle">Home</b>
+                            <small id="navSubtitle">Overview of every agent</small>
+                        </div>
+                    </div>
+                    <div class="nav__actions">
+                        <button class="chip chip--ghost" type="button" data-goto="protocol-alignment">Score a protocol</button>
+                        <div class="avatar" aria-label="Signed in as Anukool">AK</div>
+                    </div>
+                </div>
+            </nav>
+
+            <main class="app" id="appRoot">
+        <!-- ============================================================
+             Module: Home
+             ============================================================ -->
+        <section class="module" data-module="home">
+            <header class="home-hero">
+                <span class="module-hero__eyebrow">Regulatory Copilot · 12 specialist agents</span>
+                <h1>One command centre for regulatory affairs.</h1>
+                <p>
+                    Twelve specialist agents that together ingest, score, generate and orchestrate every
+                    piece of the regulatory workflow — from continuous authority monitoring to protocol
+                    scoring to health-authority Q&amp;A. All grounded in cited precedent, all designed for
+                    human-in-the-loop approval.
+                </p>
+            </header>
+            <div class="home-grid" id="homeGrid"></div>
+        </section>
+
+        <!-- ============================================================
+             Module: Protocol Alignment (existing scorer)
+             ============================================================ -->
+        <section class="module" data-module="protocol-alignment">
+        <!-- View 1: Landing / Upload -->
+        <section class="view view--upload is-active" data-view="upload">
+            <header class="hero">
+                <span class="eyebrow">
+                    <span class="dot"></span> Powered by prior agency dialogue + public precedent
+                </span>
+                <h1 class="hero__title">
+                    Score a draft protocol against
+                    <span class="hero__accent">regulatory precedent</span>
+                    before first-patient-in.
+                </h1>
+                <p class="hero__lede">
+                    Ingest a draft protocol and continuously score each design element against FDA and EMA
+                    decision letters, guidance, AdCom transcripts, and our internal regulatory dossiers.
+                    Every finding is delivered with a Regulatory Alignment Score and cited precedent.
+                </p>
+
+                <form class="dropzone" id="dropzone" aria-label="Upload draft protocol">
+                    <input type="file" id="file" accept=".pdf,.docx,.doc,.txt,.md,.markdown" hidden />
+                    <div class="dropzone__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor"
+                            stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 3v5h5" />
+                            <path d="M6 21h12a2 2 0 0 0 2-2V8l-5-5H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2z" />
+                            <path d="M12 12v6" />
+                            <path d="m9 15 3-3 3 3" />
+                        </svg>
+                    </div>
+                    <div class="dropzone__body">
+                        <p class="dropzone__title">Drop a draft protocol</p>
+                        <p class="dropzone__hint">PDF, DOCX, Markdown or plain text · nothing leaves your device in this demo</p>
+                    </div>
+                    <div class="dropzone__actions">
+                        <button type="button" class="btn btn--primary" id="browse">Choose file</button>
+                        <button type="button" class="btn btn--secondary" id="loadSample">Load sample protocol</button>
+                    </div>
+                </form>
+
+                <ul class="pill-row" aria-label="Trust bar">
+                    <li><span class="pill-dot pill-dot--blue"></span> FDA guidance</li>
+                    <li><span class="pill-dot pill-dot--purple"></span> EMA guidance</li>
+                    <li><span class="pill-dot pill-dot--green"></span> ICH</li>
+                    <li><span class="pill-dot pill-dot--amber"></span> AdCom transcripts</li>
+                    <li><span class="pill-dot pill-dot--pink"></span> ClinicalTrials.gov / EU&nbsp;CTR</li>
+                    <li><span class="pill-dot pill-dot--red"></span> FAERS</li>
+                    <li><span class="pill-dot pill-dot--teal"></span> Type B/C &amp; EOP2 minutes</li>
+                </ul>
+            </header>
+
+            <section class="domains" aria-label="Six regulatory design domains">
+                <header class="section-head">
+                    <h2>Six regulatory design domains scored</h2>
+                    <p>Every design choice is evaluated against precedent in each of these dimensions.</p>
+                </header>
+                <div class="domain-grid" id="domainPreview" role="list">
+                    <!-- Populated by app.js -->
+                </div>
+            </section>
+        </section>
+
+        <!-- View 2: Analysis in progress -->
+        <section class="view view--analyze" data-view="analyze" aria-hidden="true">
+            <div class="analyze">
+                <div class="analyze__stage">
+                    <div class="ring" id="analyzeRing" aria-hidden="true">
+                        <svg viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="52" class="ring__track" />
+                            <circle cx="60" cy="60" r="52" class="ring__progress" id="ringProgress" />
+                        </svg>
+                        <div class="ring__label">
+                            <span class="ring__num" id="ringNum">0</span><span class="ring__pct">%</span>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="analyze__title" id="analyzeTitle">Reading protocol…</h2>
+                <p class="analyze__step" id="analyzeStep">Extracting design elements</p>
+                <ol class="analyze__log" id="analyzeLog" aria-live="polite"></ol>
+            </div>
+        </section>
+
+        <!-- View 3: Results dashboard -->
+        <section class="view view--dashboard" data-view="dashboard" aria-hidden="true">
+            <header class="results-head">
+                <div class="results-head__meta">
+                    <span class="crumb">Draft protocol · BI-2026-042 · Phase&nbsp;III</span>
+                    <h2>Regulatory Alignment Score</h2>
+                    <p class="results-head__sub" id="resultsSummary"></p>
+                    <div class="version-picker" id="versionPicker" role="group"
+                        aria-label="Protocol version history"></div>
+                </div>
+                <div class="score-hero" role="img" aria-label="Overall alignment score">
+                    <svg viewBox="0 0 160 160" class="score-hero__ring">
+                        <defs>
+                            <linearGradient id="scoreGrad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0" stop-color="#0A84FF" />
+                                <stop offset="1" stop-color="#30D158" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="80" cy="80" r="68" class="score-hero__track" />
+                        <circle cx="80" cy="80" r="68" class="score-hero__progress" id="heroProgress"
+                            stroke="url(#scoreGrad)" />
+                    </svg>
+                    <div class="score-hero__center">
+                        <span class="score-hero__num" id="heroNum">78</span>
+                        <span class="score-hero__den">/ 100</span>
+                        <span class="score-hero__tag" id="heroTag">Aligned with caveats</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Regulatory milestone timeline -->
+            <section class="panel" aria-label="Regulatory pathway">
+                <header class="panel__head">
+                    <h3>Regulatory pathway</h3>
+                    <p>Where this draft sits between the last agency meeting and submission.</p>
+                </header>
+                <ol class="timeline" id="milestones"></ol>
+            </section>
+
+            <!-- Study schema -->
+            <section class="panel" aria-label="Study schema">
+                <header class="panel__head">
+                    <h3>Study schema</h3>
+                    <p>The trial arms and periods as currently designed.</p>
+                </header>
+                <div class="schema" id="studySchema"></div>
+            </section>
+
+            <section class="outcomes" aria-label="How it informs clinical trial design">
+                <article class="outcome">
+                    <span class="outcome__icon outcome__icon--amber" aria-hidden="true">⚑</span>
+                    <div>
+                        <h3>Flags divergence early</h3>
+                        <p><strong id="outFlags">3</strong> design choices regulators have questioned in comparable
+                            precedent.</p>
+                    </div>
+                </article>
+                <article class="outcome">
+                    <span class="outcome__icon outcome__icon--blue" aria-hidden="true">⟳</span>
+                    <div>
+                        <h3>Surfaces agency precedent</h3>
+                        <p><strong id="outCites">27</strong> prior FDA and EMA positions cited across
+                            population, endpoints, and comparators.</p>
+                    </div>
+                </article>
+                <article class="outcome">
+                    <span class="outcome__icon outcome__icon--green" aria-hidden="true">✓</span>
+                    <div>
+                        <h3>De-risks and accelerates</h3>
+                        <p>Est. <strong id="outWeeks">6–9 weeks</strong> saved on Health Authority Q&amp;A
+                            versus baseline.</p>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Two-pane: protocol document (left) ↔ findings (right) -->
+            <section class="split" aria-label="Protocol design workspace">
+                <div class="split__col split__col--doc">
+                    <header class="panel__head panel__head--row">
+                        <div>
+                            <h3>Draft protocol · document view</h3>
+                            <p>Sections are anchored to their D-domain. Click <em>View precedent</em> for citations.</p>
+                        </div>
+                        <span class="chip chip--ghost" aria-hidden="true">v3 · read-only</span>
+                    </header>
+                    <div class="doc" id="protocolDoc"></div>
+                </div>
+                <div class="split__col split__col--findings">
+                    <header class="panel__head panel__head--row">
+                        <div>
+                            <h3>Findings by domain</h3>
+                            <p>Click any finding to see cited precedent, or the arrow to jump to the section.</p>
+                        </div>
+                        <div class="segmented" aria-label="Domain filter">
+                            <button class="seg is-active" data-filter="all">All</button>
+                            <button class="seg" data-filter="risk">Needs attention</button>
+                            <button class="seg" data-filter="ok">Aligned</button>
+                            <button class="seg" data-filter="strong">Strong</button>
+                        </div>
+                    </header>
+                    <div class="results-grid" id="resultsGrid" role="list"></div>
+                </div>
+            </section>
+
+            <!-- Comparator precedent trials -->
+            <section class="panel" aria-label="Comparator trials">
+                <header class="panel__head">
+                    <h3>Comparator precedent trials</h3>
+                    <p>The four analogues weighing most heavily on the current score.</p>
+                </header>
+                <div class="comparators" id="comparators"></div>
+            </section>
+
+            <section class="sources" aria-label="Data lineage">
+                <header class="section-head section-head--compact">
+                    <h2>Data lineage</h2>
+                    <p>Every score is traceable back to the corpus it was computed against.</p>
+                </header>
+                <div class="sources-grid">
+                    <article class="source">
+                        <h3>Internal · our prior agency dialogue</h3>
+                        <ul>
+                            <li>Type B / C meeting minutes</li>
+                            <li>End-of-Phase-2 (EOP2) minutes</li>
+                            <li>FDA and EMA written responses</li>
+                            <li>Prior protocols and CSRs</li>
+                        </ul>
+                        <p class="source__edge">The proprietary history that public data cannot give.</p>
+                    </article>
+                    <article class="source">
+                        <h3>Public · the precedent base</h3>
+                        <ul>
+                            <li>FDA and EMA guidance, ICH</li>
+                            <li>Advisory Committee transcripts</li>
+                            <li>ClinicalTrials.gov / EU CTR</li>
+                            <li>FAERS post-marketing safety</li>
+                        </ul>
+                        <p class="source__edge">Refreshed continuously — new guidance triggers re-scoring.</p>
+                    </article>
+                </div>
+            </section>
+
+            <footer class="dash-footer">
+                <button class="btn btn--secondary" type="button" data-jump="upload">Scan another protocol</button>
+                <button class="btn btn--primary" type="button" id="exportBtn">Export briefing (PDF)</button>
+            </footer>
+        </section>
+        </section><!-- /module protocol-alignment -->
+
+        <!-- ============================================================
+             Module: Regulatory Change Monitoring
+             ============================================================ -->
+        <section class="module" data-module="change-monitoring">
+            <header class="module-hero">
+                <div>
+                    <span class="module-hero__eyebrow">Agent 1 · Change Monitoring</span>
+                    <h2>Regulations change faster than organisations can monitor.</h2>
+                    <p class="module-hero__problem">
+                        Continuous, jurisdiction-aware crawling of FDA, EMA, PMDA, MHRA, Health Canada and ICH,
+                        plus internal repositories. Detects new guidance, deadlines and comment periods and
+                        alerts the affected teams automatically.
+                    </p>
+                    <div class="module-hero__feats" id="cmFeats"></div>
+                </div>
+                <span class="module-hero__icon" aria-hidden="true">◐</span>
+            </header>
+            <div class="filter-row" id="cmFilters" role="tablist" aria-label="Agency filter"></div>
+            <div class="two-col">
+                <div>
+                    <div class="feed" id="cmFeed" role="list"></div>
+                </div>
+                <div class="card sidepanel">
+                    <h4>My subscriptions</h4>
+                    <div class="sidepanel__list" id="cmSubs"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             Module: Intelligence Extraction Engine
+             ============================================================ -->
+        <section class="module" data-module="extraction">
+            <header class="module-hero">
+                <div>
+                    <span class="module-hero__eyebrow">Agent 2 · Intelligence Extraction</span>
+                    <h2>Most regulatory knowledge is trapped inside PDFs.</h2>
+                    <p class="module-hero__problem">
+                        Ingests submissions, guidance and authority correspondence. Extracts obligations,
+                        requirements, entities, guidance statements, risk statements and authority positions
+                        into structured, queryable regulatory intelligence.
+                    </p>
+                    <div class="module-hero__feats" id="exFeats"></div>
+                </div>
+                <span class="module-hero__icon" aria-hidden="true">⎘</span>
+            </header>
+            <div class="extract-stats" id="exStats"></div>
+            <div class="two-col">
+                <div class="card">
+                    <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:10px">Recently extracted · FDA Adaptive Designs Guidance (v3)</h4>
+                    <div class="extract-list" id="exItems"></div>
+                </div>
+                <div class="card">
+                    <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:10px">Pipeline</h4>
+                    <div class="sidepanel__list">
+                        <div class="sidepanel__row"><span>PDF → structured JSON</span><span class="kbd">Docling</span></div>
+                        <div class="sidepanel__row"><span>Entity recognition</span><span class="kbd">GLiNER + BioBERT</span></div>
+                        <div class="sidepanel__row"><span>Obligation classifier</span><span class="kbd">fine-tuned</span></div>
+                        <div class="sidepanel__row"><span>Grounding + citations</span><span class="kbd">verifier</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             Module: Regulatory Knowledge Graph
+             ============================================================ -->
+        <section class="module" data-module="knowledge-graph">
+            <header class="module-hero">
+                <div>
+                    <span class="module-hero__eyebrow">Agent 3 · Regulatory Knowledge Graph</span>
+                    <h2>Show every submission, label, study and authority interaction affected by this regulation.</h2>
+                    <p class="module-hero__problem">
+                        Products, submissions, labels, studies, safety signals and authority interactions
+                        connected in one graph. Impact propagation across the entire portfolio in a single
+                        query.
+                    </p>
+                    <div class="module-hero__feats" id="kgFeats"></div>
+                </div>
+                <span class="module-hero__icon" aria-hidden="true">⇄</span>
+            </header>
+            <div class="kg-wrap">
+                <div class="kg">
+                    <div class="kg-legend" id="kgLegend"></div>
+                    <svg id="kgSvg" viewBox="0 0 640 440" preserveAspectRatio="xMidYMid meet"></svg>
+                </div>
+                <div class="card kg-detail" id="kgDetail">
+                    <h4>Select a node</h4>
+                    <p>Click any node in the graph to see the entities it connects to. The graph currently
+                        contains ~2,140 nodes and ~11,800 edges across products, submissions, labels and
+                        authority interactions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             Module: Regulatory Q&A Copilot
+             ============================================================ -->
+        <section class="module" data-module="qa-copilot">
+            <header class="module-hero">
+                <div>
+                    <span class="module-hero__eyebrow">Agent 4 · Regulatory Q&amp;A Copilot</span>
+                    <h2>Regulatory teams spend hours searching documents.</h2>
+                    <p class="module-hero__problem">
+                        Citation-grounded answers to natural-language regulatory questions. Every response
+                        is traceable back to the exact paragraph in guidance, submission or authority letter.
+                    </p>
+                    <div class="module-hero__feats" id="qaFeats"></div>
+                </div>
+                <span class="module-hero__icon" aria-hidden="true">?</span>
+            </header>
+            <div class="qa-page">
+                <ul class="chat__list" id="qaList" aria-live="polite"></ul>
+                <div class="chat__prompts" id="qaPrompts" aria-label="Suggested prompts"></div>
+                <form class="chat__form" id="qaForm">
+                    <input type="text" id="qaInput" placeholder="Ask a regulatory question — cite EMA, FDA, ICH…" autocomplete="off" />
+                    <button class="btn btn--primary" type="submit">Send</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             Module: Impact Assessment
+             ============================================================ -->
+        <section class="module" data-module="impact">
+            <header class="module-hero">
+                <div>
+                    <span class="module-hero__eyebrow">Agent 5 · Impact Assessment</span>
+                    <h2>Understanding business impact is often manual.</h2>
+                    <p class="module-hero__problem">
+                        Scores the impact of a new regulation across products, trials, manufacturing, safety
+                        and supply chain, and ranks priorities. Executive-ready impact summaries in seconds.
+                    </p>
+                    <div class="module-hero__feats" id="imFeats"></div>
+                </div>
+                <span class="module-hero__icon" aria-hidden="true">◪</span>
+            </header>
+            <div class="donut">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                    <circle cx="60" cy="60" r="48" fill="none" stroke="var(--stroke)" stroke-width="16" />
+                    <circle cx="60" cy="60" r="48" fill="none" stroke="var(--red)" stroke-width="16"
+                        stroke-dasharray="72 302" transform="rotate(-90 60 60)" />
+                    <circle cx="60" cy="60" r="48" fill="none" stroke="var(--amber)" stroke-width="16"
+                        stroke-dasharray="90 302" stroke-dashoffset="-72" transform="rotate(-90 60 60)" />
+                    <circle cx="60" cy="60" r="48" fill="none" stroke="var(--blue)" stroke-width="16"
+                        stroke-dasharray="120 302" stroke-dashoffset="-162" transform="rotate(-90 60 60)" />
+                    <circle cx="60" cy="60" r="48" fill="none" stroke="var(--green)" stroke-width="16"
+                        stroke-dasharray="20 302" stroke-dashoffset="-282" transform="rotate(-90 60 60)" />
+                </svg>
+                <div class="donut__legend">
+                    <div><i style="background:var(--red)"></i>High impact <b>· 12 products</b></div>
+                    <div><i style="background:var(--amber)"></i>Moderate impact <b>· 18 products</b></div>
+                    <div><i style="background:var(--blue)"></i>Low impact <b>· 24 products</b></div>
+                    <div><i style="background:var(--green)"></i>No impact <b>· 4 products</b></div>
+                </div>
+            </div>
+            <h3 style="margin: 6px 4px 0; font-size: 15px; letter-spacing: -0.01em;">
+                Impact of ICH E9(R1) addendum on the current portfolio
+            </h3>
+            <div class="impact-grid" id="impactGrid"></div>
+        </section>
+
+        <!-- ============================================================
+             Module: Meeting Intelligence
+             ============================================================ -->
+        <section class="module" data-module="meetings">
+            <header class="module-hero">
+                <div>
+                    <span class="module-hero__eyebrow">Agent 6 · Meeting Intelligence</span>
+                    <h2>High-value intelligence is lost in authority meetings.</h2>
+                    <p class="module-hero__problem">
+                        Ingests transcripts of Type A/B/C, EOP2 and scientific-advice meetings. Extracts
+                        commitments, action items, agency feedback and links them back to the affected
+                        submission.
+                    </p>
+                    <div class="module-hero__feats" id="mtFeats"></div>
+                </div>
+                <span class="module-hero__icon" aria-hidden="true">☰</span>
+            </header>
+            <div class="meeting-list" id="mtList"></div>
+        </section>
+
+        <!-- ============================================================
+             Module: Content Generation
+             ============================================================ -->
+        <section class="module" data-module="content">
+            <header class="module-hero">
+                <div>
+                    <span class="module-hero__eyebrow">Agent 7 · Content Generation</span>
+                    <h2>Teams repeatedly recreate similar content.</h2>
+                    <p class="module-hero__problem">
+                        Drafts submissions, response letters, label proposals, briefing packages and Q&amp;A
+                        anticipations. Human-in-the-loop approval is always required. Every claim carries a
+                        citation to source.
+                    </p>
+                    <div class="module-hero__feats" id="ctFeats"></div>
+                </div>
+                <span class="module-hero__icon" aria-hidden="true">✎</span>
+            </header>
+            <div class="tpl-grid" id="ctTemplates" role="tablist"></div>
+            <div class="draft" id="ctDraft"></div>
+        </section>
+
+        <!-- ============================================================
+             Module: Multi-Agent Orchestrator
+             ============================================================ -->
+        <section class="module" data-module="orchestrator">
+            <header class="module-hero">
+                <div>
+                    <span class="module-hero__eyebrow">Agent 8 · Multi-Agent Orchestrator</span>
+                    <h2>Regulatory work spans dozens of systems and tasks.</h2>
+                    <p class="module-hero__problem">
+                        A master planner delegates work to specialist agents, tracks human approval
+                        checkpoints and maintains an audit trail. Every step is traceable, resumable and
+                        governable.
+                    </p>
+                    <div class="module-hero__feats" id="orFeats"></div>
+                </div>
+                <span class="module-hero__icon" aria-hidden="true">◈</span>
+            </header>
+            <div class="agent-row" id="orAgents"></div>
+            <div class="card">
+                <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:10px">Current workflow · Type C briefing package for BI-2026-042</h4>
+                <div class="orch" id="orWorkflow"></div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             Module: Regulatory Data Hub
+             ============================================================ -->
+        <section class="module" data-module="data-hub">
+            <header class="module-hero">
+                <div>
+                    <span class="module-hero__eyebrow">Agent 9 · Regulatory Data Hub</span>
+                    <h2>Data is fragmented across RIM, Veeva, SharePoint and archives.</h2>
+                    <p class="module-hero__problem">
+                        A single, FHIR-native regulatory fabric that unifies submissions, correspondence,
+                        labels, safety and study metadata behind one metadata catalog and one API layer.
+                    </p>
+                    <div class="module-hero__feats" id="dhFeats"></div>
+                </div>
+                <span class="module-hero__icon" aria-hidden="true">▤</span>
+            </header>
+            <div class="extract-stats" id="dhStats"></div>
+            <div class="two-col">
+                <div class="repo" id="dhRepo"></div>
+                <div class="card">
+                    <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:10px">Sources connected</h4>
+                    <div class="sidepanel__list">
+                        <div class="sidepanel__row"><span>Veeva Vault RIM</span><span class="kbd">live</span></div>
+                        <div class="sidepanel__row"><span>SharePoint archives</span><span class="kbd">live</span></div>
+                        <div class="sidepanel__row"><span>eCTD publisher</span><span class="kbd">live</span></div>
+                        <div class="sidepanel__row"><span>Safety database (Argus)</span><span class="kbd">live</span></div>
+                        <div class="sidepanel__row"><span>Labeling repository</span><span class="kbd">live</span></div>
+                        <div class="sidepanel__row"><span>ClinicalTrials.gov / EU CTR</span><span class="kbd">daily</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             Module: Compliance & Audit
+             ============================================================ -->
+        <section class="module" data-module="compliance">
+            <header class="module-hero">
+                <div>
+                    <span class="module-hero__eyebrow">Agent 10 · Compliance &amp; Audit</span>
+                    <h2>AI outputs require trust and traceability.</h2>
+                    <p class="module-hero__problem">
+                        Audit-by-design: every AI decision, human approval and source citation is logged and
+                        signed. GxP and 21 CFR Part 11 ready. Full version history and Responsible AI
+                        controls out of the box.
+                    </p>
+                    <div class="module-hero__feats" id="cpFeats"></div>
+                </div>
+                <span class="module-hero__icon" aria-hidden="true">✓</span>
+            </header>
+            <div class="two-col">
+                <div class="card">
+                    <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:14px">Audit trail · last 48 hours</h4>
+                    <div class="audit" id="cpAudit"></div>
+                </div>
+                <div class="card">
+                    <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:10px">Controls</h4>
+                    <div class="sidepanel__list">
+                        <div class="sidepanel__row"><span>GxP validation status</span><span class="kbd" style="color:var(--green)">passing</span></div>
+                        <div class="sidepanel__row"><span>21 CFR Part 11</span><span class="kbd" style="color:var(--green)">compliant</span></div>
+                        <div class="sidepanel__row"><span>Model version</span><span class="kbd">v2026.07</span></div>
+                        <div class="sidepanel__row"><span>Responsible AI review</span><span class="kbd" style="color:var(--green)">approved</span></div>
+                        <div class="sidepanel__row"><span>Data residency</span><span class="kbd">EU + US</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             Module: Predictive Intelligence
+             ============================================================ -->
+        <section class="module" data-module="predictive">
+            <header class="module-hero">
+                <div>
+                    <span class="module-hero__eyebrow">Agent 11 · Predictive Intelligence</span>
+                    <h2>Current tools explain the past instead of forecasting the future.</h2>
+                    <p class="module-hero__problem">
+                        Forecasts approval probability, expected timeline, submission readiness and label
+                        outcomes. Simulates scenarios (endpoint change, comparator swap) against historical
+                        agency behaviour.
+                    </p>
+                    <div class="module-hero__feats" id="pdFeats"></div>
+                </div>
+                <span class="module-hero__icon" aria-hidden="true">◈</span>
+            </header>
+            <div class="gauges" id="pdGauges"></div>
+            <div class="card" style="margin-top:14px;">
+                <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:10px">Scenario simulation · BI-2026-042</h4>
+                <table class="scenarios">
+                    <thead>
+                        <tr><th>Scenario</th><th>Approval probability</th><th>Timeline</th><th>Δ vs current</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Current draft (v3)</td><td>72%</td><td>Q4 2029</td><td>—</td></tr>
+                        <tr><td>Elevate OS to co-primary</td><td>84%</td><td>Q1 2030</td><td style="color:var(--green)">+12 pp</td></tr>
+                        <tr><td>Add concurrent control arm</td><td>81%</td><td>Q2 2030</td><td style="color:var(--green)">+9 pp</td></tr>
+                        <tr><td>Restrict to CPS ≥ 10</td><td>88%</td><td>Q4 2029</td><td style="color:var(--green)">+16 pp</td></tr>
+                        <tr><td>Combine all three</td><td>93%</td><td>Q1 2030</td><td style="color:var(--green)">+21 pp</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Sheet / modal for a finding's cited precedent, iOS-style bottom sheet on mobile -->
+    <div class="sheet" id="sheet" aria-hidden="true" role="dialog" aria-modal="true"
+        aria-labelledby="sheetTitle">
+        <div class="sheet__scrim" data-close-sheet></div>
+        <div class="sheet__panel" role="document">
+            <button class="sheet__grabber" data-close-sheet aria-label="Close"></button>
+            <header class="sheet__head">
+                <span class="sheet__eyebrow" id="sheetEyebrow"></span>
+                <h3 id="sheetTitle"></h3>
+                <p id="sheetSub"></p>
+            </header>
+            <div class="sheet__body" id="sheetBody"></div>
+            <footer class="sheet__foot">
+                <button class="btn btn--secondary" data-close-sheet>Close</button>
+                <button class="btn btn--primary" id="acceptFinding">Accept recommendation</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Ask-the-agent chat -->
+    <button class="chat-fab" id="chatFab" type="button" aria-label="Ask the regulatory agent">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z" />
+            <path d="M8 10h.01M12 10h.01M16 10h.01" />
+        </svg>
+        <span>Ask the agent</span>
+    </button>
+
+    <aside class="chat" id="chat" aria-hidden="true" aria-label="Ask the regulatory agent">
+        <header class="chat__head">
+            <div>
+                <span class="chat__eyebrow">Grounded on this draft</span>
+                <h3>Ask the regulatory agent</h3>
+            </div>
+            <button class="chat__close" id="chatClose" type="button" aria-label="Close chat">×</button>
+        </header>
+        <ul class="chat__list" id="chatList" aria-live="polite"></ul>
+        <div class="chat__prompts" id="chatPrompts" aria-label="Suggested prompts"></div>
+        <form class="chat__form" id="chatForm">
+            <input type="text" id="chatInput" placeholder="Ask about a domain, section, or precedent…"
+                autocomplete="off" />
+            <button class="btn btn--primary" type="submit" aria-label="Send">Send</button>
+        </form>
+    </aside>
+
+        </div><!-- /.main-pane -->
+    </div><!-- /.shell -->
+
+    <script src="./app.js"></script>
+</body>
+
+</html>
